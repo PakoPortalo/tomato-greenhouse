@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.DS_Store
+
+# Credenciales - nunca subir a Git
+.env
+
+# Permitir el archivo de ejemplo
+!.env.example
