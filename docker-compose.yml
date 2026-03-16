@@ -36,15 +36,6 @@ services:
       influxdb:
         condition: service_healthy
 
-  sensor-simulator:
-    build: ./sensor-simulator
-    container_name: greenhouse-simulator
-    environment:
-      API_URL: http://api:8000/sensors
-      INTERVAL_SECONDS: "10"
-    depends_on:
-      - api
-
   grafana:
     image: grafana/grafana:10.2.0
     container_name: greenhouse-grafana

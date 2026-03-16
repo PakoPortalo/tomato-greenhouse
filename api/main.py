@@ -27,9 +27,6 @@ class SensorReading(BaseModel):
                                description="Temperature in °C, range -20 to 60")
     humidity: float    = Field(..., ge=0.0, le=100.0,
                                description="Relative humidity %, range 0 to 100")
-    light: float       = Field(..., ge=0.0, le=100000.0,
-                               description="Light intensity in lux, range 0 to 100000")
-
 
 # --- Endpoints ---
 @app.get("/health")
@@ -46,7 +43,6 @@ def receive_sensor_data(reading: SensorReading):
             .tag("sensor_id", reading.sensor_id)
             .field("temperature", reading.temperature)
             .field("humidity",    reading.humidity)
-            .field("light",       reading.light)
             .time(datetime.now(timezone.utc), WritePrecision.S)        )
         write_api.write(bucket=INFLUXDB_BUCKET, org=INFLUXDB_ORG, record=point)
     except Exception as exc:
@@ -58,6 +54,5 @@ def receive_sensor_data(reading: SensorReading):
         "data": {
             "temperature": reading.temperature,
             "humidity":    reading.humidity,
-            "light":       reading.light,
         },
     }
