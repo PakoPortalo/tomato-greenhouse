@@ -29,7 +29,7 @@
       "id": 2,
       "title": "Humidity (%)",
       "type": "timeseries",
-      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+      "gridPos": { "x": 0, "y": 8, "w": 24, "h": 8 },
       "fieldConfig": {
         "defaults": {
           "unit": "percent",
@@ -49,39 +49,19 @@
     },
     {
       "id": 3,
-      "title": "Light (lux)",
-      "type": "timeseries",
-      "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "lux",
-          "color": { "mode": "palette-classic" },
-          "custom": { "lineWidth": 2, "fillOpacity": 10 }
-        }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
-          "query": "from(bucket: \"sensors\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"environment\")\n  |> filter(fn: (r) => r._field == \"light\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
-          "refId": "A"
-        }
-      ]
-    },
-    {
-      "id": 4,
       "title": "Current Temperature",
       "type": "stat",
-      "gridPos": { "x": 0, "y": 16, "w": 8, "h": 4 },
+      "gridPos": { "x": 0, "y": 16, "w": 12, "h": 4 },
       "fieldConfig": {
         "defaults": {
           "unit": "celsius",
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "blue",  "value": null },
-              { "color": "green", "value": 15 },
-              { "color": "orange","value": 30 },
-              { "color": "red",   "value": 38 }
+              { "color": "blue",   "value": null },
+              { "color": "green",  "value": 15 },
+              { "color": "orange", "value": 30 },
+              { "color": "red",    "value": 38 }
             ]
           }
         }
@@ -96,10 +76,10 @@
       ]
     },
     {
-      "id": 5,
+      "id": 4,
       "title": "Current Humidity",
       "type": "stat",
-      "gridPos": { "x": 8, "y": 16, "w": 8, "h": 4 },
+      "gridPos": { "x": 12, "y": 16, "w": 12, "h": 4 },
       "fieldConfig": {
         "defaults": {
           "unit": "percent",
@@ -118,33 +98,6 @@
         {
           "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
           "query": "from(bucket: \"sensors\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"environment\")\n  |> filter(fn: (r) => r._field == \"humidity\")\n  |> last()",
-          "refId": "A"
-        }
-      ]
-    },
-    {
-      "id": 6,
-      "title": "Current Light",
-      "type": "stat",
-      "gridPos": { "x": 16, "y": 16, "w": 8, "h": 4 },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "lux",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              { "color": "dark-blue", "value": null },
-              { "color": "yellow",    "value": 1000 },
-              { "color": "orange",    "value": 10000 }
-            ]
-          }
-        }
-      },
-      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } },
-      "targets": [
-        {
-          "datasource": { "type": "influxdb", "uid": "${DS_INFLUXDB}" },
-          "query": "from(bucket: \"sensors\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"environment\")\n  |> filter(fn: (r) => r._field == \"light\")\n  |> last()",
           "refId": "A"
         }
       ]
